@@ -1,11 +1,10 @@
 package core;
 
-import sys.io.File;
-import sys.FileStat;
-import debug.Logger;
-import sys.FileSystem;
 import haxe.Exception;
 import haxe.ds.Option;
+import sys.FileStat;
+import sys.FileSystem;
+import sys.io.File;
 
 class Command {
 
@@ -21,119 +20,93 @@ class Command {
         return None;
     }
 
-    private function copy(_assetsDirectory:String):Bool {
-        
-        if (FileSystem.exists(_assetsDirectory)) {
+    private function copyResources(srcPath:String, dstPath:String):Void {
 
-            if (!FileSystem.isDirectory(_assetsDirectory)) {
+        if (FileSystem.exists(dstPath)) {
 
-                Logger.print('Assigned asset folder: ' + __project.resourcePath + ', is missing.');
-            }
         }
         else {
 
-            Logger.print('Assigned asset folder: ' + __project.resourcePath + ', is missing.');
+            try {
 
-            return false;
+                FileSystem.createDirectory(dstPath);
+
+            } catch(e:Exception) {
+
+                throw 'Cannot create directory `${dstPath}`: ${e}';
+            }
         }
 
-        var _assetsFolders:Array<String> = FileSystem.readDirectory(__project.path + __project.resourcePath);
+        var _files:Array<String> = FileSystem.readDirectory(srcPath);
 
-        for (i in 0..._assetsFolders.length) {
+        for (file in _files) {
 
-            var currentDir:String = __project.path + __project.resourcePath + '/' + _assetsFolders[i];
+            var _srcFilePath:String = srcPath + '/' + file;
 
-            if (FileSystem.isDirectory(currentDir)) {
+            var _dstFilePath:String = dstPath + '/' + file;
 
-                if (!FileSystem.exists(__project.path + 'bin/' + __directoryName + '/' + __project.resourcePath + '/' + _assetsFolders[i])) {
+            if (FileSystem.isDirectory(_srcFilePath)) {
 
-                    FileSystem.createDirectory(__project.path + 'bin/' + __directoryName + '/' + __project.resourcePath + '/' + _assetsFolders[i]);
+                copyResources(_srcFilePath, _dstFilePath);
+
+                continue;
+            }
+
+            var _sourceFileStat:FileStat = FileSystem.stat(_srcFilePath);
+
+            if (FileSystem.exists(_dstFilePath)) {
+
+                var _destFileStat:FileStat = FileSystem.stat(_dstFilePath);
+
+                if(_sourceFileStat.mtime.getTime() < _destFileStat.mtime.getTime()) {
+
+                    continue;
                 }
+            }
 
-                var files:Array<String> = FileSystem.readDirectory(currentDir);
+            try {
 
-                for (j in 0...files.length) {
+                File.copy(_srcFilePath, _dstFilePath);
 
-                    if (!FileSystem.isDirectory(currentDir + '/' + files[j])) {
+            } catch(e:Exception) {
 
-                        var _destFile:String = __project.path + 'bin/' + __directoryName + '/' + __project.resourcePath + '/' + _assetsFolders[i] + '/' + files[j];
-
-                        var _sourceFileStat:FileStat = FileSystem.stat(currentDir + '/' + files[j]);
-
-                        if (FileSystem.exists(_destFile)) {
-
-                            var _destFileStat:FileStat = FileSystem.stat(_destFile);
-
-                            if(!(_sourceFileStat.mtime.getTime() > _destFileStat.mtime.getTime())) {
-
-                                continue;
-                            }
-                        }
-                        
-                        File.copy(currentDir + '/' + files[j], _destFile);
-                    }
-                }
+                throw 'Cannot copy file `${_srcFilePath}`: ${e}';
             }
         }
     }
 
-    private function copyResources(project:Project, __directoryName:String):Bool {
+    public function cleanResources(srcPath:String):Void {
         
-        var _assetsDirectory:String = __project.path + __project.resourcePath;
+        var _files:Array<String> = FileSystem.readDirectory(srcPath);
 
-        if (FileSystem.exists(_assetsDirectory)) {
+        for (file in _files) {
 
-            if (!FileSystem.isDirectory(_assetsDirectory)) {
+            var _srcFilePath:String = srcPath + '/' + file;
 
-                Logger.print('Assigned asset folder: ' + __project.resourcePath + ', is missing.');
-            }
-        }
-        else {
+            if (FileSystem.isDirectory(_srcFilePath)) {
 
-            Logger.print('Assigned asset folder: ' + __project.resourcePath + ', is missing.');
+                cleanResources(_srcFilePath);
 
-            return false;
-        }
+                try {
 
-        var _assetsFolders:Array<String> = FileSystem.readDirectory(__project.path + __project.resourcePath);
-
-        for (i in 0..._assetsFolders.length) {
-
-            var currentDir:String = __project.path + __project.resourcePath + '/' + _assetsFolders[i];
-
-            if (FileSystem.isDirectory(currentDir)) {
-
-                if (!FileSystem.exists(__project.path + 'bin/' + __directoryName + '/' + __project.resourcePath + '/' + _assetsFolders[i])) {
-
-                    FileSystem.createDirectory(__project.path + 'bin/' + __directoryName + '/' + __project.resourcePath + '/' + _assetsFolders[i]);
+                    FileSystem.deleteDirectory(_srcFilePath);
+    
+                } catch(e:Exception) {
+    
+                    throw 'Cannot delete directory `${_srcFilePath}`: ${e}';
                 }
 
-                var files:Array<String> = FileSystem.readDirectory(currentDir);
+                continue;
+            }
 
-                for (j in 0...files.length) {
+            try {
 
-                    if (!FileSystem.isDirectory(currentDir + '/' + files[j])) {
+                FileSystem.deleteFile(_srcFilePath);
 
-                        var _destFile:String = __project.path + 'bin/' + __directoryName + '/' + __project.resourcePath + '/' + _assetsFolders[i] + '/' + files[j];
+            } catch(e:Exception) {
 
-                        var _sourceFileStat:FileStat = FileSystem.stat(currentDir + '/' + files[j]);
-
-                        if (FileSystem.exists(_destFile)) {
-
-                            var _destFileStat:FileStat = FileSystem.stat(_destFile);
-
-                            if(!(_sourceFileStat.mtime.getTime() > _destFileStat.mtime.getTime())) {
-
-                                continue;
-                            }
-                        }
-                        
-                        File.copy(currentDir + '/' + files[j], _destFile);
-                    }
-                }
+                throw 'Cannot delete file `${_srcFilePath}`: ${e}';
             }
         }
-
-        return true;
     }
 }

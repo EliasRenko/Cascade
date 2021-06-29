@@ -71,7 +71,7 @@ class Build extends Command {
             }
         }
 
-        trace(_hxmlArgs);
+        copyResources(__project.path + __project.resourcePath, __project.path + 'bin/' + _directoryName + '/' + __project.resourcePath);
 
         return None;
 	}
