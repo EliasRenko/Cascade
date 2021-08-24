@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+
+    "configurations": [
+
+        {
+            "name": "Run debug",
+
+            "type": "hxcpp",
+
+            "request": "launch",
+
+            "preLaunchTask": "Resources",
+            
+            "program": "${workspaceFolder}/bin/windows.debug/App-debug.exe"
+        },
+        {
+            "name": "Run",
+
+            "type": "hxcpp",
+
+            "request": "launch",
+            
+            "preLaunchTask": "Resources",
+
+            "program": "${workspaceFolder}/bin/windows/Main.exe"
+        }
+    ]
+}

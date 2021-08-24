@@ -1,0 +1,66 @@
+{
+    "version": "2.0.0",
+
+    "tasks": [
+        {
+            "label": "Build neko",
+
+            "type": "shell",
+
+            "command": "haxelib",
+
+            "args": ["run", "cascade", "build", "neko", "${workspaceFolder}/test/"],
+
+            "problemMatcher": [],
+        },
+        {
+            "label": "Build windows",
+
+            "type": "shell",
+
+            "command": "haxelib",
+
+            "args": ["run", "cascade", "build", "windows", "${workspaceFolder}/test/"],
+
+            "problemMatcher": [],
+        },
+        {
+            "label": "Build web",
+
+            "type": "shell",
+
+            "command": "haxelib run cascade build web",
+
+            "problemMatcher": [],
+        },
+        {
+            "label": "Clean",
+
+            "type": "shell",
+
+            "command": "haxelib run cascade clean windows",
+
+            "problemMatcher": []
+        },
+        {
+            "label": "Resources",
+
+            "type": "shell",
+
+            "command": "haxelib",
+
+            "args": ["run", "cascade", "build", "windows", "${workspaceFolder}/test/"],
+
+            "problemMatcher": []
+        },
+        {
+            "label": "Setup",
+
+            "type": "shell",
+
+            "command": "haxelib run cascade setup default",
+
+            "problemMatcher": []
+        }
+    ]
+}

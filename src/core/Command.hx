@@ -37,6 +37,8 @@ class Command {
             }
         }
 
+        trace(srcPath);
+
         var _files:Array<String> = FileSystem.readDirectory(srcPath);
 
         for (file in _files) {

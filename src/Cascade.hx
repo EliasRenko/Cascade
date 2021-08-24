@@ -1,5 +1,6 @@
 package;
 
+import sys.FileSystem;
 import commands.Build;
 import commands.Clean;
 import core.Command;
@@ -26,14 +27,32 @@ import sys.io.File;
 class Cascade {
     
     public static function main():Void {
+
+        trace(Sys.args());
         
         var _args:Array<String> = Sys.args();
 
-        Assertions.assert(_args.length > 1, 'No argument has been found. No task to complete.');
+        if (_args.length <= 1) {
 
-        var _project:Project = parseProject(_args[_args.length - 1]);
+            Logger.print('No argument has been found. No task to complete.');
+
+            Sys.exit(0);
+        }
+
+        var _path:String = _args[_args.length - 1];
 
         _args.pop();
+        
+        if (FileSystem.isDirectory(_args[_args.length - 1])) {
+
+            _path = _args[_args.length - 1];
+
+            _args.pop();
+        }
+
+        trace(_path);
+        
+        var _project:Project = parseProject(_path);
 
         switch (_args[0]) {
 
@@ -115,13 +134,13 @@ class Cascade {
 
             author: isNull('author', _projectJson.Project.Author, "Your name"),
 
-            debug: null,
+            debug: isNull('debug', _projectJson.Project.Debug, true),
 
             dependencies: isNull('dependencies', _projectJson.Project.Build.Dependencies, []),
 
             flags: isNull('flags', _projectJson.Project.Build.Flags, []),
 
-            mainClass: isNull('mainClass', _projectJson.Project.Build.MainClass, "Main"),
+            mainClass: isNull('mainClass', _projectJson.Project.Build.MainClass, 'drc.core.App'),
 
             path: path,
 

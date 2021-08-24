@@ -1,0 +1,6 @@
+-main Main 
+-cp C:\Users\ifedorenko\Documents\GitHub\Cascade/test/src 
+-cpp C:\Users\ifedorenko\Documents\GitHub\Cascade/test/bin/windows.debug 
+-debug 
+-dce full 
+-D 

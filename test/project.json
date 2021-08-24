@@ -1,0 +1,24 @@
+{
+    "Project":{
+       "Name":"name",
+       "Author":"author",
+       "Version":"0.0.1",
+       "App":{
+          "Name":"template",
+          "Package":"org.drc.template"
+       },
+       "Build":{
+          "MainClass":"Main",
+          "SourceFolder":"src",
+          "ResourcesFolder":"res",
+          "Debug": "true",
+          "Dependencies":[
+             
+          ],
+          "Flags":[
+             "-dce full",
+             "-D toolchain=mingw"
+          ]
+       }
+    }
+ }
