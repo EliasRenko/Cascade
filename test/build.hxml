@@ -1,6 +1,10 @@
 -main Main 
--cp C:\Users\ifedorenko\Documents\GitHub\Cascade/test/src 
--cpp C:\Users\ifedorenko\Documents\GitHub\Cascade/test/bin/windows.debug 
+-cp C:\Users\ifedorenko\Documents\Repos\cascade/test/src 
+-neko C:\Users\ifedorenko\Documents\Repos\cascade/test/run.n 
+-lib drc2d 
+-lib drc2d-physics 
+-lib drc2d-ui 
+-lib msdfgen 
+-lib hxcpp-debug-server 
 -debug 
 -dce full 
--D 

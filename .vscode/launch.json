@@ -12,7 +12,7 @@
 
             "preLaunchTask": "Resources",
             
-            "program": "${workspaceFolder}/bin/windows.debug/App-debug.exe"
+            "program": "${workspaceFolder}/bin/windows.debug/Main-debug.exe"
         },
         {
             "name": "Run",
@@ -20,10 +20,8 @@
             "type": "hxcpp",
 
             "request": "launch",
-            
-            "preLaunchTask": "Resources",
 
-            "program": "${workspaceFolder}/bin/windows/Main.exe"
+            "program": "${workspaceFolder}/bin/windows/Main-debug.exe"
         }
     ]
 }

@@ -1,5 +1,7 @@
 package commands;
 
+import haxe.io.Path;
+import core.Resources;
 import sys.io.File;
 import sys.FileSystem;
 import sys.io.Process;
@@ -32,6 +34,8 @@ class Build extends Command {
         _hxmlArgs.push('-cp');
 
         _hxmlArgs.push(__project.path + __project.sourcePath);
+
+        trace("PATH! " + __project.path);
 
         switch(args[1]) {
 
@@ -72,13 +76,19 @@ class Build extends Command {
 
         for (i in 0...__project.dependencies.length) {
 
-            var _dependencyPath:String = new Process('haxelib', ['libpath', __project.dependencies[i]]).stdout.readAll().toString();
+            var _dependencyPath:String = new Process('haxelib', ['libpath', __project.dependencies[i]]).stdout.readLine().toString();
+
+            trace("Help :" + _dependencyPath);
 
             if (FileSystem.exists(_dependencyPath + 'project.json')) {
 
-                //var _dependencyProject:Pro = utils.Resources.getProject(_dependencyPath + 'project.json');
+                var _dependencyProject:Project = Resources.parseProject(_dependencyPath);
 
-                //Common.copyResources(_dependencyProject, __directoryName);
+                copyResources(_dependencyPath + _dependencyProject.resourcePath, __project.path + 'bin/' + _directoryName + '/' + __project.resourcePath);
+            }
+            else {
+
+                trace("fuck :" + _dependencyPath + 'project.json');
             }
         }
 
@@ -125,21 +135,11 @@ class Build extends Command {
 
         //_hxmlArgs.push(__project.mainClass);
 
-        trace(_hxmlArgs);
-
-        var _process:Process = new Process('haxe', _hxmlArgs);
-
-        //if (_process.exitCode(true) != 0) throw _process.stdout.readAll().toString();
-
-        var _result = _process.exitCode(true);
-
-        trace("EX" + _result);
-
         var _result:Int = Sys.command('haxe', _hxmlArgs);
 
         var _hxml:String = "";
 
-        _hxmlArgs.pop();
+        //_hxmlArgs.pop();
 
         for (i in 0..._hxmlArgs.length) {
 
@@ -158,7 +158,7 @@ class Build extends Command {
 
         if (_result != 0) {
 
-            throw 'Build failed with compilation errors: ${_process.stdout.readAll().toString()}';
+            throw 'Build failed with compilation errors, result: ${_result}';
 
             /** Log Error. **/
 

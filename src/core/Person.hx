@@ -1,6 +1,10 @@
 package core;
 
-typedef Project = {
+class Person {
+    
+    var applicationId:String;
+
+    var author:String;
 
     var debug:Bool;
 
@@ -19,4 +23,15 @@ typedef Project = {
     var resourcePath:String;
 
     var version:String;
+
+    var color:Color = new Color();
+}
+
+private class Color {
+    
+    var value:Int;
+
+    public function new() {
+        
+    }
 }

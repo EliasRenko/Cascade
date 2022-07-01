@@ -13,11 +13,14 @@
           "ResourcesFolder":"res",
           "Debug": "true",
           "Dependencies":[
-             
+            "drc2d",
+            "drc2d-physics",
+			   "drc2d-ui",
+			   "msdfgen",
+			   "hxcpp-debug-server"
           ],
           "Flags":[
-             "-dce full",
-             "-D toolchain=mingw"
+             "-dce full"
           ]
        }
     }
