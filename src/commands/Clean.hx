@@ -4,6 +4,7 @@ import core.Command;
 import core.Project;
 import haxe.Exception;
 import haxe.ds.Option;
+import src.core.Cmd;
 
 class Clean extends Command {
 
@@ -12,7 +13,7 @@ class Clean extends Command {
         super(project);
     }
 
-	override public function run(args:Array<String>):Option<Exception> {
+	override public function run(args:Array<String>, cmd:Cmd):Option<Exception> {
 
         var _directoryName:String = '';
 

@@ -5,6 +5,7 @@ import haxe.ds.Option;
 import sys.FileStat;
 import sys.FileSystem;
 import sys.io.File;
+import src.core.Cmd;
 
 class Command {
 
@@ -15,7 +16,7 @@ class Command {
         __project = project;
     }
 
-    public function run(args:Array<String>):Option<Exception> {
+    public function run(args:Array<String>, cmd:Cmd):Option<Exception> {
 
         return None;
     }

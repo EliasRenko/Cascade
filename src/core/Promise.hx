@@ -1,7 +1,7 @@
 package src.core;
 
 import haxe.Timer;
-import drc.types.PromiseEventType;
+import drcJS.types.PromiseEventType;
 
 class Promise<T> extends EventDispacher<Promise<T>> {
 

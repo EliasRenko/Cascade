@@ -2,5 +2,3 @@
 -main Cascade
 -cp src
 
--cmd neko run.n __test
-

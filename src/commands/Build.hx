@@ -9,6 +9,7 @@ import core.Command;
 import core.Project;
 import haxe.Exception;
 import haxe.ds.Option;
+import src.core.Cmd;
 
 class Build extends Command {
     
@@ -21,7 +22,7 @@ class Build extends Command {
         super(project);
     }
 
-	override public function run(args:Array<String>):Option<Exception> {
+	override public function run(args:Array<String>, cmd:Cmd):Option<Exception> {
 
         var _directoryName:String = '';
 
@@ -37,7 +38,7 @@ class Build extends Command {
 
         trace("PATH! " + __project.path);
 
-        switch(args[1]) {
+        switch(cmd.value) {
 
             case 'js':
 
