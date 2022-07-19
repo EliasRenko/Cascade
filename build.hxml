@@ -2,3 +2,6 @@
 -main Cascade
 -cp src
 
+-lib haxe-commands
+-lib haxe-events
+

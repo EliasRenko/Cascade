@@ -9,7 +9,7 @@ import core.Command;
 import core.Project;
 import haxe.Exception;
 import haxe.ds.Option;
-import src.core.Cmd;
+import Cmd;
 
 class Build extends Command {
     

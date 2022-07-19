@@ -5,7 +5,7 @@ import haxe.ds.Option;
 import sys.FileStat;
 import sys.FileSystem;
 import sys.io.File;
-import src.core.Cmd;
+import Cmd;
 
 class Command {
 

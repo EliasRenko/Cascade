@@ -10,8 +10,8 @@ import core.Resources;
 import debug.Logger;
 import haxe.Exception;
 import sys.FileSystem;
-import src.core.Configuration;
-import src.core.Cmd;
+import Configuration;
+import Cmd;
 
 /** 
 
