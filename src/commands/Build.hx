@@ -1,7 +1,7 @@
 package commands;
 
-import Cmd;
-import core.Command;
+import Command;
+import core.Job;
 import core.Project;
 import core.Resources;
 import haxe.Exception;
@@ -11,7 +11,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 
-class Build extends Command {
+class Build extends Job {
     
     // ** Privates.
 
@@ -22,7 +22,7 @@ class Build extends Command {
         super(project);
     }
 
-	override public function run(args:Array<String>, cmd:Cmd):Option<Exception> {
+	override public function run(args:Array<String>, cmd:Command):Option<Exception> {
 
         var _directoryName:String = '';
 

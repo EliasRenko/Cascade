@@ -1,23 +1,23 @@
 package commands;
 
-import core.Command;
+import Command;
+import core.Job;
 import core.Project;
 import haxe.Exception;
 import haxe.ds.Option;
-import Cmd;
 
-class Clean extends Command {
+class Clean extends Job {
 
     public function new(project:Project) {
         
         super(project);
     }
 
-	override public function run(args:Array<String>, cmd:Cmd):Option<Exception> {
+	override public function run(args:Array<String>, cmd:Command):Option<Exception> {
 
         var _directoryName:String = '';
 
-        switch(args[1]) {
+        switch(cmd.value) {
 
             case 'js':
 
@@ -33,12 +33,12 @@ class Clean extends Command {
 
             default:
 
-                return Some(new Exception('Invalid build argument.'));
+                // return Some(new Exception('Invalid build argument.'));
         }
 
         trace("Clear");
 
-        cleanResources(__project.path + 'bin/' + _directoryName + '/' + __project.resourcePath);
+        //cleanResources(__project.path + 'bin/' + _directoryName + '/' + __project.resourcePath);
         
         return None;
 	}

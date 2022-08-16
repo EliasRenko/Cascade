@@ -1,13 +1,13 @@
 package core;
 
+import Command;
 import haxe.Exception;
 import haxe.ds.Option;
 import sys.FileStat;
 import sys.FileSystem;
 import sys.io.File;
-import Cmd;
 
-class Command {
+class Job {
 
     private var __project:Project;
 
@@ -16,7 +16,7 @@ class Command {
         __project = project;
     }
 
-    public function run(args:Array<String>, cmd:Cmd):Option<Exception> {
+    public function run(args:Array<String>, cmd:Command):Option<Exception> {
 
         return None;
     }

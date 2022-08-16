@@ -20,8 +20,10 @@
 			"args": [
 				"run",
 				"cascade",
-				"-build",
-				"web"
+				"-clean",
+				"all",
+				"x",
+				"y"
 			],
 			"problemMatcher": [],
 			"group": {

@@ -1,10 +1,10 @@
 package;
 
-import Cmd;
+import Command;
 import Configuration;
 import commands.Build;
 import commands.Clean;
-import core.Command;
+import core.Job;
 import core.JsonParser;
 import core.Person;
 import core.Project;
@@ -62,18 +62,20 @@ class Cascade {
             Logger.print('Using default directory path: ${_path}');
         }
 
-        project = Resources.parseProject(_path);
+        // project = Resources.parseProject(_path);
 
         var configuration:Configuration = prepareConfiguration();
 
         configuration.parse(_args);
 
-        configuration.dispachEvents();
+        trace(configuration.options);
+
+        configuration.runCommands();
 
         // Logger.print('Invalid command');
     }
 
-    public static function runBuild(command:Cmd, type:Int):Void {
+    public static function runBuild(command:Command, type:Int):Void {
         
         trace("BUILD");
 
@@ -98,18 +100,14 @@ class Cascade {
         // Logger.print('Invalid command');
     }
 
-    public static function runClean(command:Cmd, type:Int):Void {
+    public static function runClean(command:Command, type:Int):Void {
 
         runCommand(null, new Clean(project), command);
     }
 
-    public static function name() {
+    public static function runCommand(args:Array<String>, job:Job, cmd:Command):Void {
 
-    }
-
-    public static function runCommand(args:Array<String>, command:Command, cmd:Cmd):Void {
-
-        var _result:Option<Exception> = command.run(args, cmd);
+        var _result:Option<Exception> = job.run(args, cmd);
 
         switch(_result) {
 
@@ -130,11 +128,11 @@ class Cascade {
         configuration.addEventListener(runBuild, 1);
         configuration.addEventListener(runClean, 2);
 
-        var cmd_build:Cmd = new Cmd(1, "");
+        var cmd_build:Command = new Command(1, "");
 
         configuration.addOption("-build", cmd_build);
 
-        var cmd_clean:Cmd = new Cmd(2, "");
+        var cmd_clean:Command = new Command(2, "");
 
         cmd_clean.addProperty('x');
         cmd_clean.addProperty('y');
