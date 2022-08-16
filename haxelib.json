@@ -8,5 +8,5 @@
 
     "contributors": ["EliasRenko"],
     "tags": [],
-    "dependencies": {"haxe-commands": "", "haxe-events": ""}
+    "dependencies": {"haxe-commands": "", "haxe-events": "", "haxe-unit": "", "haxe-json": ""}
 }

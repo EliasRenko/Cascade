@@ -1,17 +1,19 @@
 package;
 
-import core.Person;
-import core.JsonParser;
+import Cmd;
+import Configuration;
 import commands.Build;
 import commands.Clean;
 import core.Command;
+import core.JsonParser;
+import core.Person;
 import core.Project;
 import core.Resources;
 import debug.Logger;
 import haxe.Exception;
+import haxe.ds.Option;
+import json.Tools;
 import sys.FileSystem;
-import Configuration;
-import Cmd;
 
 /** 
 
@@ -30,12 +32,10 @@ class Cascade {
     public static var project:Project;
 
     public static function main():Void {
-        
-        var configuration:Configuration = prepareConfiguration();
-
-        configuration.init();
 
         var _args:Array<String> = Sys.args();
+
+        trace("ARGS: " + Sys.args());
 
         if (_args.length <= 1) {
 
@@ -44,11 +44,9 @@ class Cascade {
             Sys.exit(0);
         }
 
-        trace("BUILD: " + configuration.options);
-
         var _path:String = _args[_args.length - 1];
 
-        _args.pop();
+        //_args.pop();
 
         try {
 
@@ -66,11 +64,11 @@ class Cascade {
 
         project = Resources.parseProject(_path);
 
-        trace("DATA: " + configuration.options);
+        var configuration:Configuration = prepareConfiguration();
 
-        // ** Check commands
+        configuration.parse(_args);
 
-        configuration.runCommands();
+        configuration.dispachEvents();
 
         // Logger.print('Invalid command');
     }
@@ -105,9 +103,13 @@ class Cascade {
         runCommand(null, new Clean(project), command);
     }
 
+    public static function name() {
+
+    }
+
     public static function runCommand(args:Array<String>, command:Command, cmd:Cmd):Void {
 
-        var _result:haxe.ds.Option<Exception> = command.run(args, cmd);
+        var _result:Option<Exception> = command.run(args, cmd);
 
         switch(_result) {
 

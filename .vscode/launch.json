@@ -1,27 +1,15 @@
 {
     "version": "0.2.0",
-
+    
     "configurations": [
-
         {
-            "name": "Run debug",
+            "name": "Haxe Interpreter",
 
-            "type": "hxcpp",
+            "type": "haxe-eval",
 
             "request": "launch",
 
-            "preLaunchTask": "Resources",
-            
-            "program": "${workspaceFolder}/bin/windows.debug/Main-debug.exe"
-        },
-        {
-            "name": "Run",
-
-            "type": "hxcpp",
-
-            "request": "launch",
-
-            "program": "${workspaceFolder}/bin/windows/Main-debug.exe"
+            "args": ["build.hxml", "--interp"]
         }
     ]
 }

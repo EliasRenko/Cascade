@@ -1,11 +1,10 @@
 package core;
 
-import json.ClassParser;
 import haxe.Exception;
 import haxe.Json;
-import sys.io.File;
-
+import json.Parser;
 import json.Tools;
+import sys.io.File;
 
 class Resources {
 
@@ -71,36 +70,11 @@ class Resources {
         return _project;
     }
 
-    public static function getProject(path:String):Void {
+    public static function getProject(path:String) {
         
         var _projectSource:String;
 
         _projectSource = File.getContent('${path}project.json');
-
-        var filename = 'project.json';
-
-        var json = json.Parser.parse(_projectSource, filename);
-
-        trace(json.pos);
-
-        //trace(json.value);
-
-        switch (json.value) {
-            case JNull: trace('null!');
-            case JString(string): trace('string!');
-            case JBool(bool): trace('boolean!');
-            case JNumber(number): trace('number!');
-            case JArray(values): trace('array!');
-            case JObject(fields): trace('object!');
-        }
-
-        var value = Tools.getField(json, 'Project');
-
-        trace(value);
-
-        var classObject:ClassParser<Project> = new ClassParser(json);
-
-        //trace(classObject.object);
 
         
     }

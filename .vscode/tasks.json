@@ -1,66 +1,55 @@
 {
-    "version": "2.0.0",
-
-    "tasks": [
-        {
-            "label": "Build neko",
-
-            "type": "shell",
-
-            "command": "haxelib",
-
-            "args": ["run", "cascade", "build", "neko", "${workspaceFolder}/test/"],
-
-            "problemMatcher": [],
-        },
-        {
-            "label": "Build windows",
-
-            "type": "shell",
-
-            "command": "haxelib",
-
-            "args": ["run", "cascade", "build", "windows", "${workspaceFolder}/test/"],
-
-            "problemMatcher": [],
-        },
-        {
-            "label": "Build web",
-
-            "type": "shell",
-
-            "command": "haxelib run cascade build web",
-
-            "problemMatcher": [],
-        },
-        {
-            "label": "Clean",
-
-            "type": "shell",
-
-            "command": "haxelib run cascade clean windows",
-
-            "problemMatcher": []
-        },
-        {
-            "label": "Resources",
-
-            "type": "shell",
-
-            "command": "haxelib",
-
-            "args": ["run", "cascade", "build", "windows", "${workspaceFolder}/test/"],
-
-            "problemMatcher": []
-        },
-        {
-            "label": "Setup",
-
-            "type": "shell",
-
-            "command": "haxelib run cascade setup default",
-
-            "problemMatcher": []
-        }
-    ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "haxe",
+			"args": "active configuration",
+			"problemMatcher": [
+				"$haxe-absolute",
+				"$haxe",
+				"$haxe-error",
+				"$haxe-trace"
+			],
+			"group": "build",
+			"label": "haxe: active configuration"
+		},
+		{
+			"label": "Run",
+			"type": "shell",
+			"command": "haxelib",
+			"args": [
+				"run",
+				"cascade",
+				"-build",
+				"web"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"options": {
+				"cwd": "${workspaceFolder:cascade}"
+			}
+		},
+		{
+			"label": "Run DRC",
+			"type": "shell",
+			"command": "haxelib",
+			"args": [
+				"run",
+				"cascade",
+				"-build",
+				"js"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"options": {
+				"cwd": "C:/Users/Renko/Documents/Projects/Haxe/drc2d-sdk"
+			}
+		}
+	]
 }

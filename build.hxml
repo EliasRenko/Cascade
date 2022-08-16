@@ -1,7 +1,7 @@
--neko run.n
--main Cascade
 -cp src
+-main Cascade
 
 -lib haxe-commands
+-lib haxe-json
 -lib haxe-events
-
+-lib haxe-unit

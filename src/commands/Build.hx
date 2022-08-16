@@ -1,15 +1,15 @@
 package commands;
 
-import haxe.io.Path;
-import core.Resources;
-import sys.io.File;
-import sys.FileSystem;
-import sys.io.Process;
+import Cmd;
 import core.Command;
 import core.Project;
+import core.Resources;
 import haxe.Exception;
 import haxe.ds.Option;
-import Cmd;
+import haxe.io.Path;
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
 
 class Build extends Command {
     
@@ -72,7 +72,7 @@ class Build extends Command {
 
             default:
 
-                return Some(new Exception('Invalid build argument.'));
+                return Some(new Exception('Invalid `Build` argument.'));
         }
 
         for (i in 0...__project.dependencies.length) {

@@ -1,0 +1,16 @@
+{
+    "haxe.enableCodeLens": true,
+    "haxe.configurations": [
+        {"label": "Neko", "args": ["build.hxml", "-neko", "run.n", "-cmd", "neko run.n"]},
+    ],
+    "[haxe]": {
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false,
+	},
+	"editor.codeActionsOnSave": {
+		"source.sortImports": true
+	},
+	"haxe.displayServer": {
+		"arguments": ["-v"]
+	}
+}
