@@ -1,7 +1,8 @@
 {
     "haxe.enableCodeLens": true,
     "haxe.configurations": [
-        {"label": "Neko", "args": ["build.hxml", "-neko", "run.n", "-cmd", "neko run.n"]},
+        {"label": "Neko", "args": ["build.hxml", "-neko", "-main Cascade", "run.n", "-cmd", "neko run.n"]},
+		{"label": "Unit Tests", "args": ["build.hxml", "-main Main", "-neko", "test.n", "-cmd", "neko test.n"]},
     ],
     "[haxe]": {
 		"editor.formatOnSave": false,

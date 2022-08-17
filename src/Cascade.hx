@@ -5,14 +5,10 @@ import Configuration;
 import commands.Build;
 import commands.Clean;
 import core.Job;
-import core.JsonParser;
-import core.Person;
 import core.Project;
-import core.Resources;
 import debug.Logger;
 import haxe.Exception;
 import haxe.ds.Option;
-import json.Tools;
 import sys.FileSystem;
 
 /** 
@@ -67,8 +63,6 @@ class Cascade {
         var configuration:Configuration = prepareConfiguration();
 
         configuration.parse(_args);
-
-        trace(configuration.options);
 
         configuration.runCommands();
 

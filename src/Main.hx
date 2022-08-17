@@ -1,27 +1,14 @@
 package;
 
+import test.CommandsTest;
+
 class Main {
 	public static function main() {
 
-		var _args:Array<String> = Sys.args();
+		var r = new unit.TestRunner();
 
-		trace("Args: " + _args);
+		r.add(new CommandsTest());
 
-		var configuration:Configuration = new Configuration();
-
-		configuration.parse(_args);
-
-		trace(configuration);
- 
-        // ** No arguments
-
-		if (_args.length <= 1) {
-
-			trace('No argument has been found. No task to complete.');
-
-			Sys.exit(0);
-		}
-
-        
+		r.run();
 	}
 }

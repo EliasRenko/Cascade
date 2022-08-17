@@ -1,6 +1,5 @@
 package test;
 
-import Log;
 import unit.TestCase;
 
 class MainTest extends TestCase {
