@@ -8,8 +8,9 @@ import core.Job;
 import core.Project;
 import debug.Logger;
 import haxe.Exception;
+import haxe.Json;
 import haxe.ds.Option;
-import sys.FileSystem;
+import sys.io.File;
 
 /** 
 
@@ -27,11 +28,13 @@ class Cascade {
     
     public static var project:Project;
 
+    public static var path:String;
+
     public static function main():Void {
 
         var _args:Array<String> = Sys.args();
 
-        trace("ARGS: " + Sys.args());
+        //trace("ARGS: " + Sys.args());
 
         if (_args.length <= 1) {
 
@@ -40,25 +43,22 @@ class Cascade {
             Sys.exit(0);
         }
 
-        var _path:String = _args[_args.length - 1];
+        path = _args.pop();
 
-        //_args.pop();
+        Sys.setCwd(path);
+
+        // ** Import project file
 
         try {
 
-            if (FileSystem.isDirectory(_args[_args.length - 1])) {
+            var _projectSource:String = File.getContent('${path}project.json');
 
-                _path = _args[_args.length - 1];
-    
-                _args.pop();
-            }
-
-        } catch(e:Exception) {
-
-            Logger.print('Using default directory path: ${_path}');
+            project = Json.parse(_projectSource);
         }
+        catch(e:Exception) {
 
-        // project = Resources.parseProject(_path);
+            throw 'Failed to import the project file: ${e}';
+        }
 
         var configuration:Configuration = prepareConfiguration();
 
@@ -71,9 +71,9 @@ class Cascade {
 
     public static function runBuild(command:Command, type:Int):Void {
         
-        trace("BUILD");
+        trace("Project = " + project);
 
-        runCommand(null, new Build(project), command);
+        runCommand(new Build(project), command);
 
         // if (configuration.options.exists('-build')) {
 
@@ -96,12 +96,12 @@ class Cascade {
 
     public static function runClean(command:Command, type:Int):Void {
 
-        runCommand(null, new Clean(project), command);
+        runCommand(new Clean(project), command);
     }
 
-    public static function runCommand(args:Array<String>, job:Job, cmd:Command):Void {
+    public static function runCommand(job:Job, cmd:Command):Void {
 
-        var _result:Option<Exception> = job.run(args, cmd);
+        var _result:Option<Exception> = job.run(path, cmd);
 
         switch(_result) {
 

@@ -13,7 +13,7 @@ class Clean extends Job {
         super(project);
     }
 
-	override public function run(args:Array<String>, cmd:Command):Option<Exception> {
+	override public function run(path:String, cmd:Command):Option<Exception> {
 
         var _directoryName:String = '';
 
@@ -23,13 +23,13 @@ class Clean extends Job {
 
                 _directoryName = 'js';
 
-                if (__project.debug) _directoryName += '.debug';
+                if (__project.build.debug) _directoryName += '.debug';
 
             case 'windows':
 
                 _directoryName = 'windows';
 
-                if (__project.debug) _directoryName += '.debug';
+                if (__project.build.debug) _directoryName += '.debug';
 
             default:
 

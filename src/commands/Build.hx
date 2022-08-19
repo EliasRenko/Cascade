@@ -5,6 +5,7 @@ import core.Job;
 import core.Project;
 import core.Resources;
 import haxe.Exception;
+import haxe.Json;
 import haxe.ds.Option;
 import haxe.io.Path;
 import sys.FileSystem;
@@ -22,21 +23,25 @@ class Build extends Job {
         super(project);
     }
 
-	override public function run(args:Array<String>, cmd:Command):Option<Exception> {
+	override public function run(path:String, cmd:Command):Option<Exception> {
+
+        trace("Build: " + __project.build);
 
         var _directoryName:String = '';
 
         var _hxmlArgs:Array<String> = [];
 
-        _hxmlArgs.push('-main');
-
-        _hxmlArgs.push(__project.mainClass);
-
         _hxmlArgs.push('-cp');
 
-        _hxmlArgs.push(__project.path + __project.sourcePath);
+        _hxmlArgs.push(__project.build.sourceFolder);
 
-        trace("PATH! " + __project.path);
+        _hxmlArgs.push('-main');
+
+        _hxmlArgs.push(__project.build.mainClass);
+
+        //trace("PATH! " + __project.path);
+
+        trace("Lenght: " + __project.build.dependencies == null);
 
         switch(cmd.value) {
 
@@ -44,48 +49,59 @@ class Build extends Job {
 
                 _directoryName = 'js';
 
-                if (__project.debug) _directoryName += '.debug';
+                if (__project.build.debug) _directoryName += '.debug';
 
                 _hxmlArgs.push('-js');
 
-                _hxmlArgs.push(__project.path + 'bin/' + _directoryName + '/main.js');
+                _hxmlArgs.push(path + 'bin/' + _directoryName + '/main.js');
 
             case 'neko':
 
                 _directoryName = 'neko';
 
-                if (__project.debug) _directoryName += '.debug';
+                if (__project.build.debug) _directoryName += '.debug';
 
                 _hxmlArgs.push('-neko');
 
-                _hxmlArgs.push(__project.path + 'run.n');
+                _hxmlArgs.push(path + 'run.n');
 
             case 'windows':
 
                 _directoryName = 'windows';
 
-                if (__project.debug) _directoryName += '.debug';
+                if (__project.build.debug) _directoryName += '.debug';
 
                 _hxmlArgs.push('-cpp');
 
-                _hxmlArgs.push(__project.path + 'bin/' + _directoryName);
+                _hxmlArgs.push(path + 'bin/' + _directoryName);
 
             default:
 
                 return Some(new Exception('Invalid `Build` argument.'));
         }
 
-        for (i in 0...__project.dependencies.length) {
+        for (i in 0...__project.build.dependencies.length) {
 
-            var _dependencyPath:String = new Process('haxelib', ['libpath', __project.dependencies[i]]).stdout.readLine().toString();
+            var _dependencyPath:String = new Process('haxelib', ['libpath', __project.build.dependencies[i]]).stdout.readLine().toString();
 
             trace("Help :" + _dependencyPath);
 
             if (FileSystem.exists(_dependencyPath + 'project.json')) {
 
-                var _dependencyProject:Project = Resources.parseProject(_dependencyPath);
+                var _dependencyProject:Project;
 
-                copyResources(_dependencyPath + _dependencyProject.resourcePath, __project.path + 'bin/' + _directoryName + '/' + __project.resourcePath);
+                try {
+
+                    var _projectSource:String = File.getContent('${_dependencyPath}project.json');
+        
+                    _dependencyProject = Json.parse(_projectSource);
+                }
+                catch(e:Exception) {
+        
+                    throw 'Failed to load the project file of a dependency: ${e}';
+                }
+
+                copyResources(_dependencyPath + _dependencyProject.build.resourcesFolder, path + 'bin/' + _directoryName + '/' + __project.build.resourcesFolder);
             }
             else {
 
@@ -93,36 +109,40 @@ class Build extends Job {
             }
         }
 
-        if (FileSystem.exists(__project.path + __project.resourcePath)) {
+        // ** Manage resources
 
-            copyResources(__project.path + __project.resourcePath, __project.path + 'bin/' + _directoryName + '/' + __project.resourcePath);
+        if (FileSystem.exists(path + __project.build.resourcesFolder)) {
+
+            copyResources(path + __project.build.resourcesFolder, path + 'bin/' + _directoryName + '/' + __project.build.resourcesFolder);
         }
         else {
 
-            throw 'Resources directory `${__project.resourcePath}` does not exist.';
+            // TODO: Create new resource directory
+
+            throw 'Resources directory `${__project.build.resourcesFolder}` does not exist.';
         }
 
         // ** Dependency libs.
 
-        for (i in 0...__project.dependencies.length) {
+        for (i in 0...__project.build.dependencies.length) {
 
             _hxmlArgs.push('-lib');
 
-            _hxmlArgs.push(__project.dependencies[i]);
+            _hxmlArgs.push(__project.build.dependencies[i]);
         }
 
         // ** Flags.
 
-        if (__project.debug) {
+        if (__project.build.debug) {
 
-            _hxmlArgs.push('-debug');
+            _hxmlArgs.push('--debug');
         }
 
-        for (i in 0...__project.flags.length) {
+        for (i in 0...__project.build.flags.length) {
 
             var _r = ~/[ ]+/g;
 
-            var _flags:Array<String> = _r.split(__project.flags[i]);
+            var _flags:Array<String> = _r.split(__project.build.flags[i]);
 
             for (j in 0..._flags.length) {
 
@@ -137,6 +157,8 @@ class Build extends Job {
         //_hxmlArgs.push(__project.mainClass);
 
         var _result:Int = Sys.command('haxe', _hxmlArgs);
+
+        trace("HXML: " + _hxmlArgs);
 
         var _hxml:String = "";
 
@@ -155,7 +177,7 @@ class Build extends Job {
             }
         }
 
-        File.saveContent(__project.path + "/build.hxml", _hxml);
+        File.saveContent(path + "/build.hxml", _hxml);
 
         if (_result != 0) {
 

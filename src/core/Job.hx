@@ -1,6 +1,7 @@
 package core;
 
 import Command;
+import core.Project;
 import haxe.Exception;
 import haxe.ds.Option;
 import sys.FileStat;
@@ -16,7 +17,7 @@ class Job {
         __project = project;
     }
 
-    public function run(args:Array<String>, cmd:Command):Option<Exception> {
+    public function run(path:String, cmd:Command):Option<Exception> {
 
         return None;
     }
@@ -38,7 +39,7 @@ class Job {
             }
         }
 
-        trace(srcPath);
+        // trace(srcPath);
 
         var _files:Array<String> = FileSystem.readDirectory(srcPath);
 

@@ -1,22 +1,22 @@
 package core;
 
-typedef Project = {
+import models.BuildModel;
 
-    var debug:Bool;
+@:structInit
+class Project {
 
-    var dependencies:Array<String>;
+    // ** Publics
 
-    var flags:Array<String>;
+    public var build(default, null):BuildModel;
 
-    var mainClass:String;
+    public var name:String;
 
-    var name:String;
+    public var version:String;
 
-    var path:String;
+    public function new(name:String, version:String) {
 
-    var sourcePath:String;
+        this.name = name;
 
-    var resourcePath:String;
-
-    var version:String;
+        this.version = version;
+    }
 }

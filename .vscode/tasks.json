@@ -35,14 +35,14 @@
 			}
 		},
 		{
-			"label": "Run DRC",
+			"label": "Run project test",
 			"type": "shell",
 			"command": "haxelib",
 			"args": [
 				"run",
 				"cascade",
-				"-build",
-				"js"
+				"-clean",
+				"all"
 			],
 			"problemMatcher": [],
 			"group": {
@@ -50,7 +50,7 @@
 				"isDefault": true
 			},
 			"options": {
-				"cwd": "C:/Users/Renko/Documents/Projects/Haxe/drc2d-sdk"
+				"cwd": "C:/Users/Administrator/Documents/GitHub/test"
 			}
 		}
 	]
